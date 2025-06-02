@@ -31,9 +31,9 @@ document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', 
 window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
     if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.background = 'rgba(26, 26, 26, 0.98)';
     } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
+        header.style.background = 'rgba(26, 26, 26, 0.95)';
     }
 });
 
@@ -53,7 +53,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation
-document.querySelectorAll('.skill-category, .timeline-item, .education-item, .contact-info, .contact-form').forEach(el => {
+document.querySelectorAll('.skill-category, .timeline-item, .education-item, .project-card, .contact-info, .contact-form').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -140,6 +140,18 @@ document.querySelectorAll('.detail-item').forEach(item => {
     });
 });
 
+// Tech tags hover effect
+document.querySelectorAll('.tech-tag').forEach(item => {
+    item.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.transition = 'all 0.2s ease';
+    });
+
+    item.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+});
+
 // Add active class to navigation based on scroll position
 window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section[id]');
@@ -175,9 +187,27 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Initialize AOS (Animate On Scroll)
+AOS.init({
+    duration: 1000,
+    easing: 'ease-in-out',
+    once: true,
+    mirror: false
+});
+
 // Add loading animation
 window.addEventListener('load', () => {
     document.body.classList.add('loaded');
+
+    // Add stagger animation to floating icons
+    const floatingIcons = document.querySelectorAll('.floating-icon');
+    floatingIcons.forEach((icon, index) => {
+        setTimeout(() => {
+            icon.style.opacity = '1';
+            icon.style.animation = `float 6s ease-in-out infinite`;
+            icon.style.animationDelay = `${index * 0.5}s`;
+        }, index * 200);
+    });
 });
 
 // Add CSS for active nav link
@@ -208,17 +238,6 @@ style.textContent = `
     }
     
     @media (max-width: 768px) {
-        .nav-menu.active {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1rem;
-        }
         
         .hamburger.active span:nth-child(1) {
             transform: rotate(-45deg) translate(-5px, 6px);
